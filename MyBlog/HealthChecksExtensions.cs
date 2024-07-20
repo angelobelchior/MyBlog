@@ -1,7 +1,7 @@
 using System.Text.Json;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 
-namespace MyBlog.ExtensionMethods;
+namespace MyBlog;
 
 public static class HealthChecksExtensions
 {

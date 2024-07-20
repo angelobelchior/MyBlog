@@ -1,18 +1,30 @@
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.OutputCaching;
+using MyBlog.Repositories;
 
 namespace MyBlog.Pages;
 
-public class IndexModel : PageModel
+public class IndexModel(
+    MyBlogDbContext dbContext)
+    : PageModel
 {
-    private readonly ILogger<IndexModel> _logger;
+    public Models.Post? RecentPost { get; set; }
+    public Models.Post[] LatestPosts { get; set; } = [];
 
-    public IndexModel(ILogger<IndexModel> logger)
-    {
-        _logger = logger;
-    }
-
+    [OutputCache]
     public void OnGet()
     {
+        var posts = dbContext.GetPostQueryable();
+
+        RecentPost = posts
+            .OrderByDescending(p => p.CreatedAt)
+            .Select(p => p.ToModel())
+            .FirstOrDefault();
+
+        LatestPosts = posts
+            .OrderByDescending(p => p.CreatedAt)
+            .Take(5)
+            .Select(p => p.ToModel())
+            .ToArray();
     }
 }
