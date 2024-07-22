@@ -5,8 +5,6 @@
     ViewData["Title"] = "MyBlog - " + Model.Post?.Title;
 }
 
-<partial name="Components/HeaderComponent" />
-
 @if (Model.Post is null)
 {
     <header class="my-4">

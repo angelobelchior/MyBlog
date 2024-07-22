@@ -1,42 +1,54 @@
+using System.Reflection;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
 using MyBlog;
 using MyBlog.Repositories;
+using Serilog;
+using Serilog.Exceptions;
+using Serilog.Formatting.Compact;
 
 var builder = WebApplication.CreateBuilder(args);
+var configuration = builder.Configuration;
 
-var sqlServerConnectionString = builder.Configuration.GetConnectionString("SqlServerConnectionString")!;
-var redisConnectionString = builder.Configuration.GetConnectionString("RedisConnectionString")!;
+builder.Services.AddSerilog((_, options) =>
+{
+    //options.MinimumLevel.Debug();
+    
+    //options.WriteTo.Console(new CompactJsonFormatter());
+    options.WriteTo.Console();
 
-builder.Services
-    .AddHealthChecks()
-    .AddSqlServer(name: "SqlServer", connectionString: sqlServerConnectionString, tags: ["database"],
-        healthQuery: "exec proc @abc", failureStatus: HealthStatus.Degraded)
-    .AddRedis(name: "Redis", redisConnectionString: redisConnectionString, tags: ["cache"])
-    ;
+    //options.WriteTo.File("logs/log.txt", rollingInterval: RollingInterval.Day);
 
+    options.Enrich.FromLogContext();
+    options.Enrich.WithMemoryUsage();
+    options.Enrich.WithThreadId();
+    options.Enrich.WithProcessId();
+    options.Enrich.WithProcessName();
+    options.Enrich.WithEnvironmentUserName();
+    options.Enrich.WithProperty("Application", "MyBlog");
+    options.Enrich.WithProperty("Version", Assembly.GetExecutingAssembly().GetName().Version?.ToString());
+    options.Enrich.WithProperty("Environment", builder.Environment.EnvironmentName);
+    options.Enrich.WithExceptionDetails();
+});
+
+builder.Services.AddAllHealthChecks(configuration);
 builder.Services.AddRazorPages();
-builder.Services.AddStackExchangeRedisOutputCache(options =>
-{
-    options.Configuration = redisConnectionString;
-    options.InstanceName = "MyBlogInstance";
-});
-builder.Services.AddOutputCache(options =>
-{
-    options.AddBasePolicy(p => p.Expire(TimeSpan.FromSeconds(10)));
-});
-
+builder.Services.AddRedisAddOutputCache(configuration);
 builder.Services.AddDbContext<MyBlogDbContext>(options =>
-    options.UseSqlServer(sqlServerConnectionString));
+{
+    options.UseSqlServer(configuration.GetConnectionString("SqlServerConnectionString")!);
+#if DEBUG
+    options.EnableSensitiveDataLogging();
+#endif
+});
 
 var app = builder.Build();
-
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
     app.UseHsts();
 }
 
+app.UseSerilogRequestLogging();
 app.UseOutputCache();
 app.UseHttpsRedirection();
 app.UseStaticFiles();

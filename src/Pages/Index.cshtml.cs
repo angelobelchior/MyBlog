@@ -5,6 +5,7 @@ using MyBlog.Repositories;
 namespace MyBlog.Pages;
 
 public class IndexModel(
+    ILogger<IndexModel> logger,
     MyBlogDbContext dbContext)
     : PageModel
 {
@@ -14,17 +15,23 @@ public class IndexModel(
     [OutputCache]
     public void OnGet()
     {
-        var posts = dbContext.GetPostQueryable();
+        var meuObjeto = new UserInfo { Username = "angelo", Password = "abc123" };
 
-        RecentPost = posts
-            .OrderByDescending(p => p.CreatedAt)
-            .Select(p => p.ToModel())
-            .FirstOrDefault();
+        logger.LogInformation("Username: {Username}", meuObjeto.Username);
 
-        LatestPosts = posts
+        var posts = dbContext.GetPostQueryable()
             .OrderByDescending(p => p.CreatedAt)
-            .Take(5)
+            .Take(6)
             .Select(p => p.ToModel())
-            .ToArray();
+            .ToArray();;
+
+        RecentPost = posts.FirstOrDefault();
+        LatestPosts = posts.Skip(1).ToArray();
+    }
+
+    private class UserInfo
+    {
+        public string Username { get; set; } = string.Empty;
+        public string Password { get; set; } = string.Empty;
     }
 }

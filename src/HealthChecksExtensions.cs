@@ -1,10 +1,28 @@
 using System.Text.Json;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 namespace MyBlog;
 
 public static class HealthChecksExtensions
 {
+    public static void AddAllHealthChecks(this IServiceCollection services, IConfiguration configuration)
+    {
+        var sqlServerConnectionString = configuration.GetConnectionString("SqlServerConnectionString")!;
+        var redisConnectionString = configuration.GetConnectionString("RedisConnectionString")!;
+
+        services.AddHealthChecks()
+            .AddSqlServer(name: "SqlServer", 
+                          connectionString: sqlServerConnectionString, 
+                          tags: new[] { "database" },
+                          /*healthQuery: "exec proc @abc", */
+                          failureStatus: HealthStatus.Degraded)
+            
+            .AddRedis(name: "Redis", 
+                      redisConnectionString: redisConnectionString, 
+                      tags: new[] { "cache" });
+    }
+
     public static void UseAllHealthChecks(this WebApplication app)
     {
         //app.MapHealthChecks("health");
@@ -37,15 +55,14 @@ public static class HealthChecksExtensions
             }
         });
 
-        app.UseHealthChecks("/health/tag/cache", new HealthCheckOptions
-        {
-            Predicate = (registration) => registration.Tags.Contains("cache")
-        });
-
-        app.UseHealthChecks("/health/tag/database", new HealthCheckOptions
-        {
-            Predicate = (registration) => registration.Tags.Contains("database")
-        });
-
+        // app.UseHealthChecks("/health/tag/cache", new HealthCheckOptions
+        // {
+        //     Predicate = (registration) => registration.Tags.Contains("cache")
+        // });
+        //
+        // app.UseHealthChecks("/health/tag/database", new HealthCheckOptions
+        // {
+        //     Predicate = (registration) => registration.Tags.Contains("database")
+        // });
     }
 }

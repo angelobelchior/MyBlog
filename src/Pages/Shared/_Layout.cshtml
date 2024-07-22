@@ -12,12 +12,35 @@
 
 
 <div class="container">
-    @RenderBody()
+    <partial name="Components/HeaderComponent" />
+    
+    <main role="main" class="pb-3">
+        @RenderBody()
+    </main>
+
+    <footer class="footer mt-auto">
+        <div class="container">
+            <span class="text-muted">&copy; 2024 Todos os direitos reservados.</span>
+            <span id="health-status" class="float-right text-muted">Health Check: Loading...</span>
+        </div>
+    </footer>
 </div>
 
+<!-- Apenas para efeito de testes... -->
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
-<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-<script src="~/js/site.js" asp-append-version="true"></script>
+<script>
+    $(document).ready(function () {
+        const healthCheckUrl = '/health/readiness';
+        $.get(healthCheckUrl)
+            .done(function (data) {
+                $('#health-status').text('Health Check: ' + data);
+            })
+            .fail(function () {
+                $('#health-status').text('Health Check: Error...');
+            });
+    });
+</script>
+<!-- Apenas para efeito de testes... -->
 
 @await RenderSectionAsync("Scripts", required: false)
 </body>

@@ -85,5 +85,6 @@ public class MyBlogDbContext(DbContextOptions<MyBlogDbContext> options)
         .Include(p => p.Category)
         .Include(p => p.Tags).ThenInclude(t => t.Tag)
         .Include(p => p.Comments)
-        .AsNoTrackingWithIdentityResolution();
+        .AsNoTrackingWithIdentityResolution()
+        .AsSplitQuery();
 }
