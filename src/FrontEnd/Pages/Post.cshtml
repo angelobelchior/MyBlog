@@ -1,0 +1,58 @@
+﻿@page "{id:int}"
+
+@model PostModel
+@{
+    ViewData["Title"] = "MyBlog.Frontend - " + Model.Post?.Title;
+}
+
+@if (Model.Post is null)
+{
+    <header class="my-4">
+        <h1 class="text-center">Post não encontrado</h1>
+    </header>
+    <p class="text-center">O post que você está procurando não existe ou foi removido.</p>
+}
+else
+{
+    <header class="my-4">
+        <h1 class="text-center">@Model.Post.Title</h1>
+        <p class="text-muted text-center">Categoria: <a href="/list/?categoryId=@Model.Post.Category.Id">@Model.Post.Category.Name</a></p>
+    </header>
+
+    <div class="post-content">
+        <p>@Model.Post.Content</p>
+    </div>
+    <p class="text-muted">@Model.Post.CreatedAt.ToString("dd-MM-yyyy")</p>
+
+    <ul class="tags">
+        @foreach (var tag in Model.Post.Tags)
+        {
+            <li>
+                <span class="tag">
+                    <a href="?tagId=@tag.Id">@tag.Name</a>
+                </span>
+            </li>
+        }
+    </ul>
+
+    <hr>
+
+    <h2>Comentários</h2>
+    <div id="comments-list">
+        @foreach (var comment in Model.Post.Comments)
+        {
+            <div class="comment">
+                <p>
+                    <strong>@comment.Author</strong> <span class="text-muted">@comment.CreatedAt.ToString("dd-MM-yyyy hh:HH:mm:ss")</span>
+                </p>
+                <p>@comment.Content</p>
+            </div>
+        }
+    </div>
+}
+
+<hr>
+
+<div class="text-center">
+    <a href="/list" class="btn btn-primary">Ver Todos os Posts</a> <a href="/index" class="btn btn-primary">Voltar</a>
+</div>

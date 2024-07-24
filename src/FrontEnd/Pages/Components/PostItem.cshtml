@@ -1,0 +1,23 @@
+@model MyBlog.Shared.Models.Post
+
+<div class="post">
+    <h3>
+        <a href="/post/@Model.Id">@Model.Title</a>
+    </h3>
+    <p class="text-muted">Categoria: <a href="/list/?categoryId=@Model.Category.Id">@Model.Category.Name</a></p>
+    <div class="post-content">
+        <p>@Model.Content</p>
+    </div>
+    <p class="text-muted">@Model.CreatedAt.ToString("dd-MM-yyyy")</p>
+    <ul class="tags">
+        @foreach (var tag in Model.Tags)
+        {
+            <li>
+                <span class="tag">
+                    <a href="/list/?tagId=@tag.Id">@tag.Name</a>
+                </span>
+            </li>
+        }
+    </ul>
+    <p class="text-muted">Comentários: @Model.Comments.Length</p>
+</div>

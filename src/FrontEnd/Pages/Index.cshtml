@@ -1,0 +1,35 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "MyBlog.Frontend";
+}
+
+@if (Model.RecentPost is not null)
+{
+    <div class="highlight-post">
+        <h2 class="section-title">Most Recent Post</h2>
+        <partial name="Components/PostItem" model="@Model.RecentPost" />
+    </div>
+}
+
+
+@if (Model.LatestPosts.Length > 0)
+{
+    <hr>
+
+    <div>
+        <h2 class="section-title">Latest Posts</h2>
+        <div id="posts-list">
+            @foreach (var post in Model.LatestPosts)
+            {
+                <partial name="Components/PostItem" model="@post" />
+            }
+        </div>
+    </div>
+}
+
+<hr>
+        
+<div class="text-center my-4">
+    <a href="/list" class="btn btn-primary">Ver Todos os Posts</a>
+</div>
