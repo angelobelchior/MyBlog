@@ -22,13 +22,13 @@ public static class LogExtensions
         {
             options.WriteTo.Console();
 
-            var elasticSearchEndpoint = new Uri(configuration["Elasticsearch:Uri"]!);
-            options.WriteTo.Elasticsearch(new ElasticsearchSinkOptions(elasticSearchEndpoint)
+            var elasticsearchUri = new Uri(configuration["Elasticsearch:Uri"]!);
+            options.WriteTo.Elasticsearch(new ElasticsearchSinkOptions(elasticsearchUri)
             {
                 AutoRegisterTemplate = true,
-                IndexFormat = $"{configuration["Elasticsearch:IndexFormatPrefix"]!}-{DateTime.UtcNow:yyyy-MM}",
-                NumberOfReplicas = int.Parse(configuration["Elasticsearch:NumberOfReplicas"]!),
-                NumberOfShards = int.Parse(configuration["Elasticsearch:NumberOfShards"]!),
+                IndexFormat = $"{configuration["Elasticsearch:IndexFormatPrefix"]}-{{0:yyyy.MM.dd}}",
+                NumberOfReplicas = 1,
+                NumberOfShards = 2,
             });
 
             options.MinimumLevel.Debug();
@@ -58,31 +58,34 @@ public static class LogExtensions
         string appVersion)
     {
         services.AddOpenTelemetry()
-            .WithTracing(trace =>
+            .WithTracing(tracing =>
             {
-                trace
-                    .SetResourceBuilder(
-                        ResourceBuilder.CreateDefault()
-                            .AddService(serviceName: appName,
-                                serviceVersion: appVersion))
-                    .AddAspNetCoreInstrumentation()
-                    .AddHttpClientInstrumentation()
-                    .AddSqlClientInstrumentation()
-                    .AddOtlpExporter()
-                    .AddConsoleExporter();
+                tracing.SetResourceBuilder(
+                    ResourceBuilder.CreateDefault()
+                        .AddService(appName, appVersion));
+
+                tracing.AddAspNetCoreInstrumentation();
+                tracing.AddHttpClientInstrumentation();
+                tracing.AddSqlClientInstrumentation();
+                tracing.AddOtlpExporter();
+#if DEBUG
+                tracing.AddConsoleExporter();
+#endif
             })
             .WithMetrics(metrics =>
             {
-                metrics
-                    .SetResourceBuilder(
-                        ResourceBuilder.CreateDefault()
-                            .AddService(serviceName: appName,
-                                serviceVersion: appVersion))
-                    .AddRuntimeInstrumentation()
-                    .AddAspNetCoreInstrumentation()
-                    .AddHttpClientInstrumentation()
-                    .AddOtlpExporter()
-                    .AddConsoleExporter();
+                metrics.SetResourceBuilder(
+                    ResourceBuilder.CreateDefault()
+                        .AddService(appName, appVersion));
+
+                metrics.AddRuntimeInstrumentation();
+                metrics.AddHttpClientInstrumentation();
+                metrics.AddAspNetCoreInstrumentation();
+                
+                metrics.AddOtlpExporter();
+#if DEBUG
+               metrics.AddConsoleExporter();
+#endif
             });
     }
 }
