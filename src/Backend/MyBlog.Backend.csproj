@@ -3,6 +3,7 @@
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
         <Nullable>enable</Nullable>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <ImplicitUsings>enable</ImplicitUsings>
         <UserSecretsId>beb919cd-2e3d-4a86-8a91-6405fc55a252</UserSecretsId>
     </PropertyGroup>
@@ -11,7 +12,7 @@
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.4"/>
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0"/>
 
-        
+        <PackageReference Include="AspNetCore.HealthChecks.Redis" Version="8.0.1"/>
         <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="8.0.2"/>
 
         <PackageReference Include="Microsoft.AspNetCore.OutputCaching.StackExchangeRedis" Version="8.0.7"/>
@@ -32,6 +33,10 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Shared\MyBlog.Shared.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Counters\" />
     </ItemGroup>
 
 </Project>

@@ -8,7 +8,7 @@ public static class CacheExtensions
         services.AddStackExchangeRedisOutputCache(options =>
         {
             options.Configuration = redisConnectionString;
-            options.InstanceName = "MyBlogInstance";
+            options.InstanceName = "MyBlogFrontendInstance";
         });
         services.AddOutputCache(options => { options.AddBasePolicy(p => p.Expire(TimeSpan.FromSeconds(1))); });
     }

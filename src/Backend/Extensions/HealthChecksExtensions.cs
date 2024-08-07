@@ -13,5 +13,12 @@ public static class HealthChecksExtensions
                 connectionString: sqlServerConnectionString,
                 tags: new[] { "database" },
                 failureStatus: HealthStatus.Degraded);
+        
+        var redisConnectionString = configuration.GetConnectionString("RedisConnectionString")!;
+
+        services.AddHealthChecks()
+            .AddRedis(name: "Redis", 
+                redisConnectionString: redisConnectionString, 
+                tags: new[] { "cache" });
     }
 }

@@ -3,7 +3,7 @@ using MyBlog.Backend.Repositories.Models;
 
 namespace MyBlog.Backend.Repositories;
 
-public class MyBlogDbContext(DbContextOptions<MyBlogDbContext> options)
+internal class MyBlogDbContext(DbContextOptions<MyBlogDbContext> options)
     : DbContext(options)
 {
 

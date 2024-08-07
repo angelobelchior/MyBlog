@@ -77,6 +77,8 @@ public static class LogExtensions
                 metrics.SetResourceBuilder(
                     ResourceBuilder.CreateDefault()
                         .AddService(appName, appVersion));
+                
+                metrics.AddMeter("MyBlog.Backend.CacheCounter");
 
                 metrics.AddRuntimeInstrumentation();
                 metrics.AddHttpClientInstrumentation();

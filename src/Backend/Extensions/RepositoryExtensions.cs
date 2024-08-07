@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using MyBlog.Backend.Repositories;
+using MyBlog.Backend.Repositories.Posts;
 
 namespace MyBlog.Backend.Extensions;
 
@@ -14,5 +15,8 @@ public static class RepositoryExtensions
             options.EnableSensitiveDataLogging();
 #endif
         });
+        
+        services.AddScoped<PostsRepository>();
+        services.AddScoped<IPostsRepository, PostsRepositoryDecorator>();
     }
 }
