@@ -7,6 +7,7 @@ Vídeos que referenciam esse repo:
 - https://youtu.be/rE-PPMhQi44
 - https://youtu.be/3Um-XF5GgmE
 - https://youtu.be/jLHue_28yXg
+- https://youtu.be/Btq6LbeVt84
 
 Referências:
 
@@ -17,3 +18,4 @@ Referências:
 - https://www.youtube.com/watch?v=VptRKOvBGIY&ab_channel=CanaldotNET
 - https://www.youtube.com/watch?v=rE-PPMhQi44&ab_channel=AngeloBelchior
 - https://www.youtube.com/watch?v=3Um-XF5GgmE&ab_channel=AngeloBelchior
+- https://refactoring.guru/pt-br
