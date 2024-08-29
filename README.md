@@ -60,6 +60,18 @@ Feito isso, você poderá acessar:
 - Para acessar o frontend: http://localhost:5039
 - Para acessar o backend: http://localhost:5057/scalar/v1
 
+Se tudo deu certo e nada deu errado, seu ambiente está pronto para ser explorado.
+
+### Importante
+
+Esse projeto não visa, em hipótese alguma, ser um exemplo de boas práticas.
+
+Ele foi desenvolvido com o intuito de ser um playground para testar diversas tecnologias e conceitos.
+
+Outro ponto importante é que não serão aceitos PR's nesse repositório. Reforço que ele é apenas um repositório de referência para os vídeos do canal.
+
+Caso tenha alguma dúvida, abra uma issue ou comente no vídeo do canal. :)
+
 ## Canal do YouTube (https://www.youtube.com/@angelobelchior)
 
 ### Vídeos que referenciam esse repo:
