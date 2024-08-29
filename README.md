@@ -45,6 +45,12 @@ Se tudo der certo e nada der errado, você vai conseguir acessar os seguintes se
 - Para acessar o Kibana: http://localhost:5601
 - Para acessar o Elasticsearch: http://localhost:9200 (vai apresentar apenas um json)
 
+### Criando o banco de dados
+
+Com a infra de pé, é hora de criar o banco de dados. Acesse a pasta `scripts`. 
+Dentro dela tem um arquivo chamado `my_blog_scripts.sql` contendo todos os scripts necessários para a criação do banco e das tabelas além das inserções de dados.
+E não, eu não curto Migrations... 😅
+
 ### Executando os projetos 
 
 Com a infra de pé, é hora de executar os projetos.

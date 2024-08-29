@@ -1,3 +1,9 @@
+-- Criação do banco de dados MyBlog
+CREATE DATABASE MyBlog;
+
+-- Uso do banco de dados MyBlog
+USE MyBlog;
+
 -- Criação da tabela de Categorias
 CREATE TABLE Categories (
     CategoryID INT IDENTITY(1,1) PRIMARY KEY,
