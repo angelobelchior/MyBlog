@@ -5,8 +5,16 @@ using Microsoft.AspNetCore.Http;
 
 namespace MyBlog.Shared.Extensions;
 
+/// <summary>
+/// Health checks extensions
+/// </summary>
 public static class HealthChecksExtensions
-{   public static void UseHealthCheckEndpoints(this WebApplication app)
+{
+    /// <summary>
+    /// Use health check endpoints
+    /// </summary>
+    /// <param name="app"></param>
+    public static void UseHealthCheckEndpoints(this WebApplication app)
     {
         app.UseHealthChecks("/health/liveness", new HealthCheckOptions
         {

@@ -10,8 +10,18 @@ using Serilog.Sinks.Elasticsearch;
 
 namespace MyBlog.Shared.Extensions;
 
+/// <summary>
+/// Log extensions
+/// </summary>
 public static class LogExtensions
 {
+    /// <summary>
+    /// Add log
+    /// </summary>
+    /// <param name="services">Services</param>
+    /// <param name="configuration">Configuration</param>
+    /// <param name="appName">App name</param>
+    /// <param name="appVersion">App version</param>
     public static void AddLog(
         this IServiceCollection services,
         IConfiguration configuration,
@@ -47,6 +57,10 @@ public static class LogExtensions
         services.AddOpenTelemetry(appName, appVersion);
     }
 
+    /// <summary>
+    /// Use log
+    /// </summary>
+    /// <param name="app">App</param>
     public static void UseLog(this IApplicationBuilder app)
     {
         app.UseSerilogRequestLogging();

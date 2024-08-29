@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using MyBlog.Backend.Repositories.Posts;
+using MyBlog.Shared.Models;
 
 namespace MyBlog.Backend.Endpoints;
 
@@ -19,6 +20,8 @@ public static class PostsEndpoints
                 return Results.Ok(allPosts);
             })
             .WithName("AllPosts")
+            .WithDescription("Get all posts")
+            .Produces<Result<IReadOnlyCollection<Post>>>(200)
             .WithOpenApi();
 
         app.MapGet("/posts/newest", async (
@@ -30,6 +33,8 @@ public static class PostsEndpoints
                 return Results.Ok(posts);
             })
             .WithName("NewestPosts")
+            .WithDescription("Get newest posts")
+            .Produces<Result<IReadOnlyCollection<Post>>>(200)
             .WithOpenApi();
 
         app.MapGet("/posts/{id:int}", async (
@@ -43,6 +48,9 @@ public static class PostsEndpoints
                     : Results.Ok(post);
             })
             .WithName("PostById")
+            .WithDescription("Get post by id")
+            .Produces<Result<Post>>(200)
+            .Produces(404)
             .WithOpenApi();
     }
 }
